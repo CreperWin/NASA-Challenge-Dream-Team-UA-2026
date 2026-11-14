@@ -2,3 +2,15 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
 }
+/*
+@tailwind base; 
+@tailwind components; 
+@tailwind utilities;*/
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 14px;
+  font-family: var(--mono);
+}
