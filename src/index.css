@@ -55,7 +55,7 @@ body {
   background-color: var(--space-bg);
   background-image:
     /*linear-gradient(rgba(4, 7, 17, 0.25), rgba(4, 7, 17, 0.25)),*/
-    url("src/assets/space.jpg");
+    url("./assets/space.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
