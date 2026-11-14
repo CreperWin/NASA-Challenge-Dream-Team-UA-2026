@@ -19,9 +19,9 @@ export default function Navbar() {
           HealthySpace
         </h1>
         <span>Wellness in every point</span>
-        {/* <p className="text-xs text-neutral-400 font-mono">
+        <p className="text-xs text-neutral-400 font-mono">
           NASA Space Apps Challenge — Dream Team UA
-        </p> */}
+        </p>
       </div>
 
       {/* Навігаційні посилання */}
