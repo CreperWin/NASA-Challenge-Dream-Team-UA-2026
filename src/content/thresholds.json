@@ -1,49 +1,83 @@
 {
   "heart_rate": {
-    "indicator": "heart_rate",
-    "label": "Heart rate",
-    "unit": "bpm",
-    "validRange": { "min": 20, "max": 250 },
-    "zones": [
-      { "status": "critical", "max": 40 },
-      { "status": "attention", "min": 40, "max": 50 },
-      { "status": "normal", "min": 50, "max": 100 },
-      { "status": "attention", "min": 100, "max": 120 },
-      { "status": "critical", "min": 120 }
-    ],
-    "source": "TODO",
-    "verified": false
-  },
+  "indicator": "heart_rate",
+  "label": "Heart rate",
+  "unit": "bpm",
+  "validRange": { "min": 20, "max": 250 },
+  "zones": [
+    { "status": "critical", "max": 50 },
+    { "status": "attention", "min": 50, "max": 60 },
+    { "status": "normal", "min": 60, "max": 100 },
+    { "status": "attention", "min": 100, "max": 120 },
+    { "status": "critical", "min": 120 }
+  ],
+  "source": [
+    {
+      "title": "NASA Cardiovascular and Vision Laboratory",
+      "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+    },
+    {
+      "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+      "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+    },
+    {
+      "title": "American Heart Association - Target Heart Rates",
+      "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates"
+    }
+  ]
+},
   "bp_systolic": {
-    "indicator": "blood_pressure",
-    "label": "Systolic pressure",
-    "unit": "mmHg",
-    "validRange": { "min": 60, "max": 260 },
-    "zones": [
-      { "status": "critical", "max": 80 },
-      { "status": "attention", "min": 80, "max": 90 },
-      { "status": "normal", "min": 90, "max": 130 },
-      { "status": "attention", "min": 130, "max": 160 },
-      { "status": "critical", "min": 160 }
-    ],
-    "source": "TODO",
-    "verified": false
-  },
+  "indicator": "blood_pressure",
+  "label": "Systolic pressure",
+  "unit": "mmHg",
+  "validRange": { "min": 60, "max": 260 },
+  "zones": [
+    { "status": "critical", "max": 90 },
+    { "status": "normal", "min": 90, "max": 119 },
+    { "status": "attention", "min": 120, "max": 139 },
+    { "status": "critical", "min": 140 }
+  ],
+  "source": [
+    {
+      "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+      "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+    },
+    {
+      "title": "NASA Cardiovascular and Vision Laboratory",
+      "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+    },
+    {
+      "title": "American Heart Association - Understanding Blood Pressure Readings",
+      "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings"
+    }
+  ]
+},
   "bp_diastolic": {
-    "indicator": "blood_pressure",
-    "label": "Diastolic pressure",
-    "unit": "mmHg",
-    "validRange": { "min": 30, "max": 160 },
-    "zones": [
-      { "status": "critical", "max": 50 },
-      { "status": "attention", "min": 50, "max": 60 },
-      { "status": "normal", "min": 60, "max": 85 },
-      { "status": "attention", "min": 85, "max": 100 },
-      { "status": "critical", "min": 100 }
-    ],
-    "source": "TODO",
-    "verified": false
-  },
+  "indicator": "blood_pressure",
+  "label": "Diastolic pressure",
+  "unit": "mmHg",
+  "validRange": { "min": 30, "max": 200 },
+  "zones": [
+    { "status": "critical", "max": 60 },
+    { "status": "normal", "min": 60, "max": 79 },
+    { "status": "attention", "min": 80, "max": 89 },
+    { "status": "critical", "min": 90 }
+  ],
+  "source": [
+    {
+      "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+      "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+    },
+    {
+      "title": "NASA Cardiovascular and Vision Laboratory",
+      "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+    },
+    {
+      "title": "American Heart Association - Understanding Blood Pressure Readings",
+      "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings"
+    }
+  ]
+},
   "body_temperature": {
     "indicator": "body_temperature",
     "label": "Body temperature",
@@ -52,27 +86,45 @@
     "zones": [
       { "status": "critical", "max": 35 },
       { "status": "attention", "min": 35, "max": 36 },
-      { "status": "normal", "min": 36, "max": 37.5 },
-      { "status": "attention", "min": 37.5, "max": 38.5 },
-      { "status": "critical", "min": 38.5 }
+      { "status": "normal", "min": 36.1, "max": 37.2 },
+      { "status": "attention", "min": 37.2, "max": 38 },
+      { "status": "critical", "min": 38 }
     ],
-    "source": "TODO",
-    "verified": false
+    "source": [
+    {
+      "title": "NASA Immunology and virology",
+      "url": "https://nasa.gov/directorates/esdmd/hhp/immunology-and-virology/"
+    },
+    {
+      "title": "how-long-term-spaceflight-alters-immunity ",
+      "url": "https://nasa.gov/missions/station/scientists-probe-how-long-term-spaceflight-alters-immunity/"
+    },
+    {
+      "title": "Vitals from medlineplus ",
+      "url": "https://medlineplus.gov/ency/article/002341.htm"
+    }
+  ]
   },
   "blood_glucose": {
     "indicator": "blood_glucose",
-    "label": "Blood glucose",
+    "label": "Blood glucose (FPG)",
     "unit": "mg/dL",
     "validRange": { "min": 20, "max": 600 },
     "zones": [
-      { "status": "critical", "max": 54 },
-      { "status": "attention", "min": 54, "max": 70 },
-      { "status": "normal", "min": 70, "max": 140 },
-      { "status": "attention", "min": 140, "max": 200 },
-      { "status": "critical", "min": 200 }
+      { "status": "normal", "min": 0, "max": 100 },
+      { "status": "attention", "min": 100, "max": 126 },
+      { "status": "critical", "min": 126 }
     ],
-    "source": "TODO",
-    "verified": false
+    "source": [
+    {
+      "title": "Insulin secretion and sencitivity in space flight",
+      "url": "https://ntrs.nasa.gov/citations/20040088078"
+    },
+    {
+      "title": "Diabeties association",
+      "url": "https://diabetes.org/about-diabetes/diagnosis"
+    }
+  ]
   },
   "sleep_hours": {
     "indicator": "sleep",
@@ -80,14 +132,22 @@
     "unit": "hours",
     "validRange": { "min": 0, "max": 16 },
     "zones": [
-      { "status": "critical", "max": 4 },
-      { "status": "attention", "min": 4, "max": 6 },
-      { "status": "normal", "min": 6, "max": 10 },
+      { "status": "critical", "max": 5 },
+      { "status": "attention", "min": 5, "max": 7 },
+      { "status": "normal", "min": 7, "max": 10 },
       { "status": "attention", "min": 10 }
     ],
-    "source": "TODO",
-    "verified": false
+    "source": [
+  {
+    "title": "NASA Risk from Inadequate Sleep and Irregular Schedules",
+    "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/"
   },
+  {
+    "title": "CDC - How Much Sleep Do I Need?",
+    "url": "https://www.cdc.gov/sleep/about_sleep/how_much_sleep.html"
+  }
+   ]
+    },
   "mood_score": {
     "indicator": "mood",
     "label": "Mood (1-5)",
@@ -98,7 +158,15 @@
       { "status": "attention", "min": 2, "max": 3 },
       { "status": "normal", "min": 3 }
     ],
-    "source": "TODO",
-    "verified": false
+    "source": [
+    {
+      "title": "NASA Behavioral Health & Performance",
+      "url": "https://www.nasa.gov/reference/jsc-behavioral-health/"
+    },
+    {
+      "title": "NASA Behavioral Issues Associated with Long Duration Space Missions",
+      "url": "https://humanresearchroadmap.nasa.gov/tasks/task.aspx?i=752"
+    }
+  ]
   }
 }
