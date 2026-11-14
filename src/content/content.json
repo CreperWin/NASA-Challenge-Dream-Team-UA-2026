@@ -7,7 +7,20 @@
     "whenToWorry": "Heart rate outside the normal range may indicate stress, cardiovascular strain, illness, or abnormal physiological adaptation. Persistent values below 50 bpm or above 120 bpm require immediate evaluation.",
     "actions": "Recheck the measurement, reduce physical activity temporarily, review recent workload and stress levels and continue monitoring trends over time.",
     "callFlightSurgeon": "Contact the Flight Surgeon if heart rate remains below 50 bpm or above 120 bpm, shows a persistent abnormal trend, or is accompanied by dizziness, weakness, chest discomfort, or impaired performance.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Cardiovascular and Vision Laboratory",
+        "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+      },
+      {
+        "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+        "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+      },
+      {
+        "title": "American Heart Association - Target Heart Rates",
+        "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates"
+      }
+    ]
   },
   "blood_pressure": {
     "title": "Blood pressure",
@@ -17,7 +30,20 @@
     "whenToWorry": "Blood pressure consistently in the attention range may indicate developing cardiovascular stress. Blood pressure in the critical range requires prompt assessment.",
     "actions": "Repeat the measurement after a period of rest, review hydration status, evaluate workload and stress factors, monitor trends over time.",
     "callFlightSurgeon": "Contact the Flight Surgeon if systolic pressure reaches or exceeds 140 mmHg, diastolic pressure reaches or exceeds 90 mmHg, or if abnormal readings persist over multiple measurements.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+        "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+      },
+      {
+        "title": "NASA Cardiovascular and Vision Laboratory",
+        "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+      },
+      {
+        "title": "American Heart Association - Understanding Blood Pressure Readings",
+        "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings"
+      }
+    ]
   },
   "body_temperature": {
     "title": "Body temperature",
@@ -27,7 +53,20 @@
     "whenToWorry": "Temperatures outside the normal range or impaired thermoregulation or physiological stress is spotted. Fever or hypothermia requires immediate attention.",
     "actions": "Repeat the measurement, monitor for additional symptoms, reduce workload if necessary, increase monitoring frequency.",
     "callFlightSurgeon": "Contact the Flight Surgeon if temperature reaches 38.0°C or higher, falls below 35.0°C, or is accompanied by signs of illness or reduced performance.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Human Research Roadmap - Cardiovascular Adaptations",
+        "url": "https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179"
+      },
+      {
+        "title": "NASA Cardiovascular and Vision Laboratory",
+        "url": "https://www.nasa.gov/directorates/esdmd/hhp/cardiovascular-and-vision/"
+      },
+      {
+        "title": "American Heart Association - Understanding Blood Pressure Readings",
+        "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings"
+      }
+    ]
   },
   "blood_glucose": {
     "title": "Blood glucose",
@@ -37,7 +76,20 @@
     "whenToWorry": "Values above the normal range may indicate impaired glucose regulation. Values below 70 mg/dL may indicate hypoglycemia and require immediate attention.",
     "actions": "Repeat the measurement, review recent food intake, assess workload and stress levels, continue monitoring trends.",
     "callFlightSurgeon": "Contact the Flight Surgeon if glucose falls below 70 mg/dL, rises to 126 mg/dL or higher, or remains abnormal over repeated measurements.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Technical Report - Insulin Secretion and Sensitivity in Space Flight",
+        "url": "https://ntrs.nasa.gov/citations/20040088078"
+      },
+      {
+        "title": "ScienceDirect - Insulin Secretion and Sensitivity in Space Flight",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0899900702009401?via%3Dihub"
+      },
+      {
+        "title": "American Diabetes Association - Diabetes Diagnosis",
+        "url": "https://diabetes.org/about-diabetes/diagnosis"
+      }
+    ]
   },
   "sleep": {
     "title": "Sleep",
@@ -47,7 +99,20 @@
     "whenToWorry": "Sleep below 7 hours may indicate insufficient recovery. Sleep below 5 hours is considered critical and may negatively affect alertness, cognitive performance, and mission readiness.",
     "actions": "Review workload and daily schedule, maintain a consistent sleep routine, use designated rest periods and recovery time, and continue monitoring sleep duration over the next several days. Report persistent sleep difficulties to the medical team.",
     "callFlightSurgeon": "Contact the Flight Surgeon if sleep remains below 5 hours for multiple days or if fatigue begins to affect performance, alertness, decision-making, or mood.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Technical Report - Insulin Secretion and Sensitivity in Space Flight",
+        "url": "https://ntrs.nasa.gov/citations/20040088078"
+      },
+      {
+        "title": "ScienceDirect - Insulin Secretion and Sensitivity in Space Flight",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0899900702009401?via%3Dihub"
+      },
+      {
+        "title": "American Diabetes Association - Diabetes Diagnosis",
+        "url": "https://diabetes.org/about-diabetes/diagnosis"
+      }
+    ]
   },
   "mood": {
     "title": "Mood",
@@ -57,6 +122,15 @@
     "whenToWorry": "A score of 3 may indicate elevated stress or reduced well-being. Scores of 1-2 may suggest significant psychological strain and require additional assessment.",
     "actions": "Review workload and sources of stress, reschedule personal recovery or relaxation time, and continue monitoring mood trends over time. Seek behavioral health support if symptoms persist.",
     "callFlightSurgeon": "Contact the Flight Surgeon if mood scores remain at 1-2, continue to decline over time, or begin affecting teamwork, daily activities, or mission performance.",
-    "sources": []
+    "source": [
+      {
+        "title": "NASA Behavioral Health & Performance",
+        "url": "https://www.nasa.gov/reference/jsc-behavioral-health/"
+      },
+      {
+        "title": "NASA Behavioral Issues Associated with Long Duration Space Missions",
+        "url": "https://humanresearchroadmap.nasa.gov/tasks/task.aspx?i=752"
+      }
+    ]
   }
 }
