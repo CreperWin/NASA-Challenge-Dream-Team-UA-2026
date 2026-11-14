@@ -1,99 +1,25 @@
-/*import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-export default function MeasurePage() {
-  const navigate = useNavigate();
-  const [indicator, setIndicator] = useState('heart_rate');
-  const [value, setValue] = useState('');
-  const [successMsg, setSuccessMsg] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!value) return;
-    
-    // Тут у майбутньому буде збереження в сховище (localStorage / IndexedDB)
-    setSuccessMsg(true);
-    setTimeout(() => {
-      navigate('/'); // Повертаємо на Пульт після збереження
-    }, 1200);
-  };
-
-  return (
-    <div className="max-w-xl mx-auto bg-neutral-900/80 border border-neutral-800 p-6 rounded-lg backdrop-blur">
-      <div className="mb-6">
-        <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">Manual Telemetry Input</span>
-        <h2 className="text-xl font-bold text-white mt-1">Record Astronaut Vitals</h2>
-        <p className="text-xs text-neutral-400 font-mono mt-1">
-          Input real-time health metrics manually according to standard mission protocol.
-        </p>
-      </div>
-
-      {successMsg ? (
-        <div className="bg-emerald-950 border border-emerald-800 text-emerald-400 p-4 rounded text-center font-mono text-sm">
-          ✓ Measurement successfully recorded. Returning to Dashboard...
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4 font-mono text-sm">
-          <div>
-            <label className="block text-xs text-neutral-400 uppercase mb-1">Select Indicator</label>
-            <select 
-              value={indicator} 
-              onChange={(e) => setIndicator(e.target.value)}
-              className="w-full bg-black border border-neutral-800 rounded p-2.5 text-white focus:border-emerald-500 outline-none"
-            >
-              <option value="heart_rate">Heart Rate (bpm)</option>
-              <option value="blood_pressure">Blood Pressure (mmHg)</option>
-              <option value="body_temperature">Body Temperature (°C)</option>
-              <option value="blood_glucose">Blood Glucose (mg/dL)</option>
-              <option value="sleep">Sleep (hours)</option>
-              <option value="mood">Mood (1-5 scale)</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs text-neutral-400 uppercase mb-1">Value</label>
-            <input 
-              type="number" 
-              step="any"
-              placeholder="e.g. 75" 
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              className="w-full bg-black border border-neutral-800 rounded p-2.5 text-white focus:border-emerald-500 outline-none"
-              required
-            />
-          </div>
-
-          <div className="bg-neutral-950 border border-neutral-800 p-3 rounded text-xs text-neutral-400">
-            <span className="text-emerald-400 font-bold">Protocol Note:</span> Ensure sensor calibration before submitting. Out-of-range values will trigger automated advisory flags.
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <button 
-              type="submit"
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold py-2.5 px-4 rounded transition-colors uppercase tracking-wider text-xs"
-            >
-              Save & Transmit
-            </button>
-            <button 
-              type="button"
-              onClick={() => navigate('/')}
-              className="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 py-2.5 px-4 rounded transition-colors text-xs"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-    </div>
-  );
-}*/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+export const VITALS_STORAGE_KEY = 'healthySpace_vitals';
+//export const VITALS_HISTORY_KEY = 'healthySpace_history';     //тут доробити історію якщо буде час через додаток до функції handleSubmit()
+
+export type StoredVitals = {
+  heart_rate: number;
+  bp_systolic: number;
+  bp_diastolic: number;
+  body_temperature: number;
+  blood_glucose: number;
+  sleep_hours: number;
+  sleep_quality: number;
+  mood_score: number;
+  notes: string;
+  updatedAt: string;
+};
+
 export default function MeasurePage() {
   const navigate = useNavigate();
 
-  // Усі 7 показників із thresholds.json
   const [heartRate, setHeartRate] = useState('');
   const [bpSystolic, setBpSystolic] = useState('');
   const [bpDiastolic, setBpDiastolic] = useState('');
@@ -103,19 +29,66 @@ export default function MeasurePage() {
   const [sleepQuality, setSleepQuality] = useState(4);
   const [moodScore, setMoodScore] = useState(4);
   const [notes, setNotes] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg('');
+
+    // Читаємо попередні значення або дефолтні, якщо заповнили лише частину полів
+    const prevRaw = localStorage.getItem(VITALS_STORAGE_KEY);
+    const prev: Partial<StoredVitals> = prevRaw ? JSON.parse(prevRaw) : {};
+
+    const payload: StoredVitals = {
+      heart_rate: heartRate !== '' ? Number(heartRate) : (prev.heart_rate ?? 72),
+      bp_systolic: bpSystolic !== '' ? Number(bpSystolic) : (prev.bp_systolic ?? 118),
+      bp_diastolic: bpDiastolic !== '' ? Number(bpDiastolic) : (prev.bp_diastolic ?? 76),
+      body_temperature: bodyTemp !== '' ? Number(bodyTemp) : (prev.body_temperature ?? 36.6),
+      blood_glucose: bloodGlucose !== '' ? Number(bloodGlucose) : (prev.blood_glucose ?? 92),
+      sleep_hours: sleepHours !== '' ? Number(sleepHours) : (prev.sleep_hours ?? 7.5),
+      sleep_quality: sleepQuality,
+      mood_score: moodScore,
+      notes: notes.trim(),
+      updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    // Базова перевірка допустимих меж (validRange із thresholds.json)
+    if (payload.heart_rate < 20 || payload.heart_rate > 250) {
+      setErrorMsg('Heart rate must be between 20 and 250 bpm.');
+      return;
+    }
+    if (payload.bp_systolic < 60 || payload.bp_systolic > 260) {
+      setErrorMsg('Systolic pressure must be between 60 and 260 mmHg.');
+      return;
+    }
+    if (payload.bp_diastolic < 30 || payload.bp_diastolic > 160) {
+      setErrorMsg('Diastolic pressure must be between 30 and 160 mmHg.');
+      return;
+    }
+    if (payload.body_temperature < 30 || payload.body_temperature > 43) {
+      setErrorMsg('Body temperature must be between 30 and 43 °C.');
+      return;
+    }
+    if (payload.blood_glucose < 20 || payload.blood_glucose > 600) {
+      setErrorMsg('Blood glucose must be between 20 and 600 mg/dL.');
+      return;
+    }
+    if (payload.sleep_hours < 0 || payload.sleep_hours > 16) {
+      setErrorMsg('Sleep duration must be between 0 and 16 hours.');
+      return;
+    }
+
+    localStorage.setItem(VITALS_STORAGE_KEY, JSON.stringify(payload));
     setSuccessMsg(true);
+
     setTimeout(() => {
       navigate('/');
-    }, 1200);
+    }, 900);
   };
 
   return (
     <div className="measure-layout">
-      {/* ЛІВА БІЛА КАРТКА: Форма введення */}
       <div className="nasa-white-card">
         <div className="card-header-block">
           <span className="nasa-tag">MANUAL TELEMETRY CHECK</span>
@@ -125,13 +98,18 @@ export default function MeasurePage() {
           </p>
         </div>
 
+        {errorMsg && (
+          <div className="alert-item status-critical" style={{ marginBottom: '1rem' }}>
+            ⚠ {errorMsg}
+          </div>
+        )}
+
         {successMsg ? (
           <div className="nasa-success-box">
-            ✓ Telemetry logged & transmitted to Orbital Core. Returning to Console...
+            ✓ Telemetry logged &amp; transmitted to Orbital Core. Returning to Console...
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="nasa-form">
-            {/* Верхня сітка 2x2: Пульс, Тиск, Температура, Глюкоза */}
             <div className="vitals-grid-2x2">
               <div className="field-group">
                 <label>Heart rate</label>
@@ -206,16 +184,14 @@ export default function MeasurePage() {
               </div>
             </div>
 
-            {/* Червона лінія-розділювач NASA */}
             <hr className="nasa-red-divider" />
 
-            {/* Нижня секція: Повзунки Sleep/Mood зліва + нотатки справа */}
             <div className="bottom-split-grid">
               <div className="sliders-column">
                 <div className="slider-block">
                   <div className="slider-top-row">
-                    <label>Sleep quality</label>
-                    <span className="scale-badge"> {sleepQuality} / 5</span>
+                    <label>Sleep</label>
+                    <span className="scale-badge">{sleepQuality} / 5</span>
                   </div>
                   <input
                     type="range"
@@ -226,10 +202,10 @@ export default function MeasurePage() {
                     onChange={(e) => setSleepQuality(Number(e.target.value))}
                     className="nasa-slider"
                   />
+                  <span className="tiny-hint">quality</span>
 
                   <div className="hours-subinput">
-                    <span></span>
-                    <span className="tiny-hint">Hours</span>
+                    <span className="tiny-hint">hours</span>
                     <input
                       type="number"
                       step="0.5"
@@ -244,8 +220,8 @@ export default function MeasurePage() {
 
                 <div className="slider-block">
                   <div className="slider-top-row">
-                    <label>Mood quality</label>
-                    <span className="scale-badge"> {moodScore} / 5</span>
+                    <label>Mood</label>
+                    <span className="scale-badge">{moodScore} / 5</span>
                   </div>
                   <input
                     type="range"
@@ -256,6 +232,7 @@ export default function MeasurePage() {
                     onChange={(e) => setMoodScore(Number(e.target.value))}
                     className="nasa-slider"
                   />
+                  <span className="tiny-hint">quality</span>
                 </div>
               </div>
 
@@ -292,7 +269,6 @@ export default function MeasurePage() {
         )}
       </div>
 
-      {/* ПРАВА КОЛОНКА: Інструкція + темна напівпрозора плашка примітки */}
       <div className="measure-side-column">
         <div className="nasa-white-card">
           <span className="nasa-tag">MEASUREMENT GUIDE</span>
