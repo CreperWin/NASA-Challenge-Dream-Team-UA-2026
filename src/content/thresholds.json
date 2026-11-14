@@ -1,0 +1,104 @@
+{
+  "heart_rate": {
+    "indicator": "heart_rate",
+    "label": "Heart rate",
+    "unit": "bpm",
+    "validRange": { "min": 20, "max": 250 },
+    "zones": [
+      { "status": "critical", "max": 40 },
+      { "status": "attention", "min": 40, "max": 50 },
+      { "status": "normal", "min": 50, "max": 100 },
+      { "status": "attention", "min": 100, "max": 120 },
+      { "status": "critical", "min": 120 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "bp_systolic": {
+    "indicator": "blood_pressure",
+    "label": "Systolic pressure",
+    "unit": "mmHg",
+    "validRange": { "min": 60, "max": 260 },
+    "zones": [
+      { "status": "critical", "max": 80 },
+      { "status": "attention", "min": 80, "max": 90 },
+      { "status": "normal", "min": 90, "max": 130 },
+      { "status": "attention", "min": 130, "max": 160 },
+      { "status": "critical", "min": 160 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "bp_diastolic": {
+    "indicator": "blood_pressure",
+    "label": "Diastolic pressure",
+    "unit": "mmHg",
+    "validRange": { "min": 30, "max": 160 },
+    "zones": [
+      { "status": "critical", "max": 50 },
+      { "status": "attention", "min": 50, "max": 60 },
+      { "status": "normal", "min": 60, "max": 85 },
+      { "status": "attention", "min": 85, "max": 100 },
+      { "status": "critical", "min": 100 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "body_temperature": {
+    "indicator": "body_temperature",
+    "label": "Body temperature",
+    "unit": "°C",
+    "validRange": { "min": 30, "max": 43 },
+    "zones": [
+      { "status": "critical", "max": 35 },
+      { "status": "attention", "min": 35, "max": 36 },
+      { "status": "normal", "min": 36, "max": 37.5 },
+      { "status": "attention", "min": 37.5, "max": 38.5 },
+      { "status": "critical", "min": 38.5 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "blood_glucose": {
+    "indicator": "blood_glucose",
+    "label": "Blood glucose",
+    "unit": "mg/dL",
+    "validRange": { "min": 20, "max": 600 },
+    "zones": [
+      { "status": "critical", "max": 54 },
+      { "status": "attention", "min": 54, "max": 70 },
+      { "status": "normal", "min": 70, "max": 140 },
+      { "status": "attention", "min": 140, "max": 200 },
+      { "status": "critical", "min": 200 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "sleep_hours": {
+    "indicator": "sleep",
+    "label": "Sleep duration",
+    "unit": "hours",
+    "validRange": { "min": 0, "max": 16 },
+    "zones": [
+      { "status": "critical", "max": 4 },
+      { "status": "attention", "min": 4, "max": 6 },
+      { "status": "normal", "min": 6, "max": 10 },
+      { "status": "attention", "min": 10 }
+    ],
+    "source": "TODO",
+    "verified": false
+  },
+  "mood_score": {
+    "indicator": "mood",
+    "label": "Mood (1-5)",
+    "unit": "score",
+    "validRange": { "min": 1, "max": 5 },
+    "zones": [
+      { "status": "critical", "max": 2 },
+      { "status": "attention", "min": 2, "max": 3 },
+      { "status": "normal", "min": 3 }
+    ],
+    "source": "TODO",
+    "verified": false
+  }
+}

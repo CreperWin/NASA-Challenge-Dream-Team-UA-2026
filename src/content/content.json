@@ -1,0 +1,62 @@
+{
+  "heart_rate": {
+    "title": "Heart rate",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  },
+  "blood_pressure": {
+    "title": "Blood pressure",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  },
+  "body_temperature": {
+    "title": "Body temperature",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  },
+  "blood_glucose": {
+    "title": "Blood glucose",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  },
+  "sleep": {
+    "title": "Sleep",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  },
+  "mood": {
+    "title": "Mood",
+    "howToMeasure": "TODO",
+    "whyItMatters": "TODO",
+    "spaceRisk": "TODO",
+    "whenToWorry": "TODO",
+    "actions": ["TODO"],
+    "callFlightSurgeon": "TODO",
+    "sources": []
+  }
+}
