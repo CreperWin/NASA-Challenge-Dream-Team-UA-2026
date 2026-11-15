@@ -773,3 +773,174 @@ footer {
   font-weight: 600;
 }
 h2, h3 { font-family: 'Exo 2', sans-serif; }
+
+/* Body Map module inside .nasa-white-card */
+.body-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.body-gender-switch {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  border: 1px solid var(--border-light);
+  gap: 4px;
+}
+.body-gender-btn {
+  border: none;
+  background: transparent;
+  color: var(--ink-muted);
+  padding: 6px 16px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.body-gender-btn.active {
+  background: var(--nasa-blue);
+  color: #ffffff;
+}
+.body-map-workspace {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.body-silhouette-box {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+}
+.body-map-svg {
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.body-map-svg path:hover {
+  fill: rgba(11, 61, 145, 0.16);
+}
+.body-panel-col {
+  flex: 1 1 320px;
+  min-width: 260px;
+}
+.body-empty-box {
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1.5px dashed var(--border-light);
+  color: var(--ink-muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+.body-zone-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.body-zone-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.body-organs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.body-organ-card {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.body-organ-card:hover {
+  border-color: var(--nasa-blue);
+  background: #f0f9ff;
+}
+.body-organ-card.selected {
+  border-color: var(--nasa-blue);
+  background: #eff6ff;
+}
+.body-organ-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.body-organ-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.body-organ-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  color: var(--ink-dark);
+}
+.body-organ-metrics {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--ink-dark);
+}
+.body-organ-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.body-detail-link {
+  color: var(--nasa-blue);
+  font-weight: 600;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+.body-detail-link:hover {
+  text-decoration: underline;
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.08);
+  }
+  40% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+}
+.heart-pulse {
+  animation: heartPulse 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .heart-pulse {
+    animation: none;
+  }
+}

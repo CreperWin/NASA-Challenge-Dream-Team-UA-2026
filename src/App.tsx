@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import BodyMapPage from './pages/BodyMapPage';
 import MeasurePage, { VITALS_STORAGE_KEY, type StoredVitals } from './pages/MeasurePage';
 import IndicatorPage from './pages/IndicatorPage';
 import thresholdsData from './content/thresholds.json';
@@ -183,23 +184,59 @@ function Dashboard() {
           <h3>Astronaut 2D Body Model</h3>
           {/* Контейнер для інтеграції 2D-фігури тіла іншим учасником */}
           <Link to="/body" id="body-map-widget-slot" className="body-placeholder-box">
-            <strong>[ 2D Interactive Body Model Slot ]</strong>
-            <span style={{ marginTop: '0.4rem' }}>
+            <svg viewBox="390 25 244 525" style={{ width: '96px', height: 'auto' }}>
+              <image
+                href="/body-silhouette-male.svg"
+                x="390"
+                y="25"
+                width="244"
+                height="525"
+              />
+              {(sleepStatus !== 'normal' || moodStatus !== 'normal') && (
+                <circle
+                  cx="512"
+                  cy="78"
+                  r="24"
+                  fill={
+                    sleepStatus === 'critical' || moodStatus === 'critical'
+                      ? 'rgba(239, 68, 68, 0.35)'
+                      : 'rgba(245, 158, 11, 0.35)'
+                  }
+                  stroke={
+                    sleepStatus === 'critical' || moodStatus === 'critical'
+                      ? '#ef4444'
+                      : '#f59e0b'
+                  }
+                  strokeWidth="2"
+                />
+              )}
+              {(hrStatus !== 'normal' || bpStatus !== 'normal' || tempStatus !== 'normal' || glucoseStatus !== 'normal') && (
+                <rect
+                  x="472"
+                  y="138"
+                  width="80"
+                  height="110"
+                  rx="16"
+                  fill={
+                    hrStatus === 'critical' || bpStatus === 'critical' || tempStatus === 'critical' || glucoseStatus === 'critical'
+                      ? 'rgba(239, 68, 68, 0.32)'
+                      : 'rgba(245, 158, 11, 0.32)'
+                  }
+                  stroke={
+                    hrStatus === 'critical' || bpStatus === 'critical' || tempStatus === 'critical' || glucoseStatus === 'critical'
+                      ? '#ef4444'
+                      : '#f59e0b'
+                  }
+                  strokeWidth="2"
+                />
+              )}
+            </svg>
+            <span style={{ marginTop: '0.4rem', fontSize: '0.8rem' }}>
               Click to inspect organ systems &amp; localized telemetry
             </span>
           </Link>
         </div>
       </div>
-    </div>
-  );
-}
-
-function BodyMapPage() {
-  return (
-    <div className="nasa-white-card">
-      <span className="nasa-tag">BODY SYSTEMS</span>
-      <h2>Interactive Body Map</h2>
-      <p>Full-scale 2D body visualization and system diagnostics module.</p>
     </div>
   );
 }
