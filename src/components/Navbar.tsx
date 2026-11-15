@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { getMissionStore, subscribeMission } from '../core/missionControler';
 
 export default function Navbar() {
   const location = useLocation();
@@ -10,6 +11,16 @@ export default function Navbar() {
       ? 'text-emerald-400 border-b-2 border-emerald-400 pb-1 font-semibold'
       : 'text-neutral-400 hover:text-white transition-colors pb-1';
 
+  const [missionDay, setMissionDay] = useState<number>(() => {
+  const { playerState } = getMissionStore();
+  return playerState.day ?? (playerState.index > 0 ? playerState.index : 187);
+});
+
+useEffect(() => {
+  return subscribeMission(({ playerState }) => {
+    setMissionDay(playerState.day ?? (playerState.index > 0 ? playerState.index : 187));
+  });
+}, []);
   // Закривати меню при переході на іншу сторінку
   useEffect(() => {
     setIsOpen(false);
@@ -57,7 +68,7 @@ export default function Navbar() {
       <div>
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono text-neutral-400">
-            MISSION DAY(nominal): <strong className="text-white">187</strong>
+            MISSION DAY(nominal): <strong className="text-white">{missionDay}</strong>
           </span>
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white mt-1">
@@ -65,7 +76,15 @@ export default function Navbar() {
         </h1>
         <span>Wellness in every point</span>
       </div>
-
+      <button
+        type="button"
+        className="mobile-nav-trigger"
+        aria-label="Open navigation menu"
+        onClick={() => setIsOpen(true)}
+      >
+        <span>☰</span>
+        <span>Menu</span>
+      </button>
       {/* Затемнення фону при відкритому мобільному меню */}
       <div
         className={`mobile-nav-backdrop ${isOpen ? 'open' : ''}`}
