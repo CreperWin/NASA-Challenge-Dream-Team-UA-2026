@@ -1,0 +1,43 @@
+{
+  "id": "hypoglycemia-fever",
+  "title": "Metabolic Drop & Fever Spike",
+  "story": "Skipped ration cycle combined with immune stress leads to low blood glucose and rising body temperature.",
+  "days": [
+    {
+      "day": 191,
+      "values": {
+        "heart_rate": 72,
+        "bp_systolic": 114,
+        "bp_diastolic": 72,
+        "body_temperature": 36.8,
+        "blood_glucose": 86,
+        "sleep_hours": 7.1,
+        "mood_score": 4
+      }
+    },
+    {
+      "day": 192,
+      "values": {
+        "heart_rate": 84,
+        "bp_systolic": 108,
+        "bp_diastolic": 68,
+        "body_temperature": 37.6,
+        "blood_glucose": 71,
+        "sleep_hours": 6.4,
+        "mood_score": 3
+      }
+    },
+    {
+      "day": 193,
+      "values": {
+        "heart_rate": 98,
+        "bp_systolic": 102,
+        "bp_diastolic": 64,
+        "body_temperature": 38.3,
+        "blood_glucose": 62,
+        "sleep_hours": 5.9,
+        "mood_score": 2
+      }
+    }
+  ]
+}
