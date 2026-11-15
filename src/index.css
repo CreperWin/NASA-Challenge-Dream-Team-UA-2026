@@ -72,6 +72,11 @@ body {
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
 }
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
 
 #root {
   position: relative;
@@ -129,22 +134,42 @@ header.border-b {
   top: 0;
   z-index: 50;
   width: 100%;
+  box-sizing: border-box;
   background-color: var(--nasa-blue);
   border-bottom: 3px solid var(--nasa-red);
   margin: 0 0 2rem 0;
-  padding: 1rem 2rem;
+  padding: 0.85rem 1rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.75rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
-@media (min-width: 768px) {
+header.border-b .navigation, /*розширено css для мобільників для правильного розташування navbar*/
+header.border-b nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) { 
   header.border-b {
+    padding: 1rem 2rem;
+    gap: 1rem;
+  }
+
+  header.border-b .navigation,
+  header.border-b nav {
     flex-direction: row;
     align-items: center;
+    gap: 1.5rem;
+    font-size: 1.35rem;          /*було 1, збільшено як 1,35 щоб повернути початковий стан для компютерників*/
   }
 }
 
