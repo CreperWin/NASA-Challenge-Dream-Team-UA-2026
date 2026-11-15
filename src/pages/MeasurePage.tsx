@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { saveDay, type DayValues } from '../core/history';
 
 export const VITALS_STORAGE_KEY = 'healthySpace_vitals';
 //export const VITALS_HISTORY_KEY = 'healthySpace_history';     //тут доробити історію якщо буде час через додаток до функції handleSubmit()
@@ -31,6 +32,7 @@ export default function MeasurePage() {
   const [notes, setNotes] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
+  const [savedDay, setSavedDay] = useState<number | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,6 +81,21 @@ export default function MeasurePage() {
       return;
     }
 
+    // Новий день в історії: кожне збереження ДОДАЄ запис, а не перезаписує попередній.
+    // Порожні поля не записуються (немає точки на графіку), слайдер настрою є завжди.
+    const toNum = (s: string) => (s.trim() === '' ? undefined : Number(s));
+    const dayValues: DayValues = {
+      heart_rate: toNum(heartRate),
+      bp_systolic: toNum(bpSystolic),
+      bp_diastolic: toNum(bpDiastolic),
+      body_temperature: toNum(bodyTemp),
+      blood_glucose: toNum(bloodGlucose),
+      sleep_hours: toNum(sleepHours),
+      mood_score: moodScore,
+    };
+    setSavedDay(saveDay(dayValues));
+
+    // Лишаємо «останній стан» для Dashboard / Body Map, які читають цей ключ.
     localStorage.setItem(VITALS_STORAGE_KEY, JSON.stringify(payload));
     setSuccessMsg(true);
 
@@ -106,7 +123,7 @@ export default function MeasurePage() {
 
         {successMsg ? (
           <div className="nasa-success-box">
-            ✓ Telemetry logged &amp; transmitted to Orbital Core. Returning to Console...
+            ✓ Day {savedDay} logged &amp; transmitted to Orbital Core. Returning to Console...
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="nasa-form">
