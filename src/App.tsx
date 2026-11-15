@@ -7,6 +7,16 @@ import { healthApi } from './api';
 import { INDICATORS } from './core/indicators';
 import { INDICATOR_IDS } from './core/types';
 import type { EvaluationResult, IndicatorId, Scenario, Status } from './core/types';
+import IndicatorPage from './pages/IndicatorPage';
+
+const INDICATOR_ROUTE: Record<IndicatorId, string> = {
+  heart_rate: 'heart_rate',
+  blood_pressure: 'bp_systolic',
+  body_temperature: 'body_temperature',
+  blood_glucose: 'blood_glucose',
+  sleep: 'sleep_hours',
+  mood: 'mood_score',
+};
 
 const STATUS_ICON: Record<Status, string> = {
   normal: '✓',
@@ -196,17 +206,18 @@ function MissionPage() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-black text-slate-100 p-6 font-sans selection:bg-emerald-500 selection:text-black">
+      <div className="min-h-screen text-slate-100 p-6 font-sans">
+        <Navbar />
         <div className="max-w-6xl mx-auto">
-          <Navbar />
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/body" element={<BodyMapPage />} />
             <Route path="/measure" element={<MeasurePage />} />
+            <Route path="/indicator/:id" element={<IndicatorPage />} />
             <Route path="/mission" element={<MissionPage />} />
           </Routes>
-          <footer className="mt-16 border-t border-neutral-900 pt-4 text-center text-xs text-neutral-600 font-mono">
-            Dream Team UA // Orbital Telemetry Monitoring Interface
+          <footer>
+            Dream Team UA // HealthySpace Orbital Telemetry Monitoring Interface
           </footer>
         </div>
       </div>

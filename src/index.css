@@ -64,16 +64,19 @@ body {
     sans-serif;
   background-color: var(--space-bg);
   background-image:
-    radial-gradient(circle at 22% 18%, rgba(255, 224, 178, 0.22) 0%, transparent 18%),
-    radial-gradient(circle at 78% 65%, rgba(56, 189, 248, 0.14) 0%, transparent 28%),
-    radial-gradient(1px 1px at 15% 25%, #ffffff 100%, transparent),
-    radial-gradient(1.5px 1.5px at 35% 12%, #fde68a 100%, transparent),
-    radial-gradient(1px 1px at 62% 34%, #ffffff 100%, transparent),
-    radial-gradient(1.5px 1.5px at 84% 22%, #bae6fd 100%, transparent),
-    radial-gradient(1px 1px at 48% 78%, #ffffff 100%, transparent),
-    radial-gradient(1px 1px at 72% 85%, #ffffff 100%, transparent);
+    /*linear-gradient(rgba(4, 7, 17, 0.25), rgba(4, 7, 17, 0.25)),*/
+    url("./assets/space.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
 }
 
 a {
@@ -100,7 +103,7 @@ a {
   padding: 0 1.5rem;
 }
 
-/* Синя навігаційна панель як у макеті Figma */
+/* Синя навігаційна панель як у макеті Figma (була)*//*
 header.border-b {
   background-color: var(--nasa-blue);
   border-bottom: 3px solid var(--nasa-red);
@@ -112,6 +115,30 @@ header.border-b {
   align-items: flex-start;
   gap: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  header.border-b {
+    flex-direction: row;
+    align-items: center;
+  }
+}*/
+/* Закріплена верхня навігаційна панель на всю ширину екрана */
+header.border-b {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background-color: var(--nasa-blue);
+  border-bottom: 3px solid var(--nasa-red);
+  margin: 0 0 2rem 0;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
 @media (min-width: 768px) {
@@ -139,10 +166,11 @@ header.border-b {
 }
 
 .text-2xl {
-  font-size: 1.65rem;
-  line-height: 2rem;
+  font-size: 2rem;
+  line-height: 2.4rem;
   margin: 0.15rem 0;
   letter-spacing: 0.02em;
+  font-family: 'Michroma', sans-serif;
 }
 
 .font-bold {
@@ -155,12 +183,18 @@ header p {
 }
 
 .navigation {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.875rem;
-  font-family: var(--mono);
+  justify-content: center;
+  gap: 2.5rem;
+  font-size: 1.38rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
 }
 
 .navigation a {
