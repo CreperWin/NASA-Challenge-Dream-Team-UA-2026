@@ -3,8 +3,6 @@
   "title": "Hypoglycemia and Fever scenario",
   "story": "TODO",
   "days": [
-  [
-  [
   {
     "day": 185,
     "values": {
@@ -366,5 +364,4 @@
     }
   }
 ]
-  ]
 }
