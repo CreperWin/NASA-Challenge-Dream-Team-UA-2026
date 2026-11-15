@@ -9,15 +9,6 @@ import { INDICATOR_IDS } from './core/types';
 import type { EvaluationResult, IndicatorId, Scenario, Status } from './core/types';
 import IndicatorPage from './pages/IndicatorPage';
 
-const INDICATOR_ROUTE: Record<IndicatorId, string> = {
-  heart_rate: 'heart_rate',
-  blood_pressure: 'bp_systolic',
-  body_temperature: 'body_temperature',
-  blood_glucose: 'blood_glucose',
-  sleep: 'sleep_hours',
-  mood: 'mood_score',
-};
-
 const STATUS_ICON: Record<Status, string> = {
   normal: '✓',
   attention: '⚠',
