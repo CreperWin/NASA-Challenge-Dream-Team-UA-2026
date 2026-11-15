@@ -118,7 +118,7 @@ header.border-b {
     align-items: center;
   }
 }*/
-/* Закріплена верхня навігаційна панель на всю ширину екрана */
+/* Закріплена верхня навігаційна панель на всю ширину екрана *//*КАРДИНАЛЬНІ ЗМІНИ ЦЬОГО БЛОКУ!!!*/
 header.border-b {
   position: sticky;
   top: 0;
@@ -137,29 +137,133 @@ header.border-b {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
-header.border-b .navigation, /*розширено css для мобільників для правильного розташування navbar*/
-header.border-b nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.35rem;
-  flex-shrink: 0;
-  font-size: 0.85rem;
+header.border-b > div:first-child {
+  min-width: 0;
+}
+
+header.border-b h1,
+header.border-b .brand-title {
+  font-size: 1.35rem;
+  line-height: 1.1;
+  margin: 0.15rem 0;
+}
+
+header.border-b p,
+header.border-b .brand-subtitle,
+header.border-b .mission-day {
+  font-size: 0.65rem;
   line-height: 1.2;
 }
 
-@media (min-width: 768px) { 
+/* Затемнення всього body при відкритому мобільному меню */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-nav-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Мобільна виїжджаюча панель при свайпі вліво (< 768px) */
+header.border-b .navigation,
+header.border-b nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 240px;
+  max-width: 78vw;
+  background-color: var(--nasa-blue);
+  border-right: 2px solid rgba(255, 255, 255, 0.15);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1rem 1.25rem;
+  gap: 0;
+  font-size: 1rem;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.65);
+}
+
+header.border-b .navigation.open,
+header.border-b nav.open {
+  transform: translateX(0);
+}
+
+header.border-b .navigation a,
+header.border-b nav a {
+  padding: 0.85rem 0.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: left;
+  width: 100%;
+}
+
+.mobile-nav-close {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem 0 0.75rem 0.75rem;
+  cursor: pointer;
+}
+
+/* Десктопна версія (>= 768px) — залишається точно як на комп'ютерному скріншоті */
+@media (min-width: 768px) {
+  .mobile-nav-backdrop,
+  .mobile-nav-close {
+    display: none !important;
+  }
+
   header.border-b {
     padding: 1rem 2rem;
     gap: 1rem;
   }
 
+  header.border-b h1,
+  header.border-b .brand-title {
+    font-size: 2.25rem;
+  }
+
+  header.border-b p,
+  header.border-b .brand-subtitle,
+  header.border-b .mission-day {
+    font-size: 0.85rem;
+  }
+
   header.border-b .navigation,
   header.border-b nav {
+    position: static;
+    height: auto;
+    width: auto;
+    max-width: none;
+    background: transparent;
+    border-right: none;
+    box-shadow: none;
+    padding: 0;
+    transform: none !important;
+    margin: 0 auto;
     flex-direction: row;
     align-items: center;
     gap: 1.5rem;
-    font-size: 1.35rem;          /*було 1, збільшено як 1,35 щоб повернути початковий стан для компютерників*/
+    font-size: 1.35rem;
+  }
+
+  header.border-b .navigation a,
+  header.border-b nav a {
+    padding: 0.25rem 0;
+    border-bottom: none;
+    width: auto;
   }
 }
 
