@@ -1,215 +1,195 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import MeasurePage, { VITALS_STORAGE_KEY, type StoredVitals } from './pages/MeasurePage';
+import MeasurePage from './pages/MeasurePage';
+import BodyMapPage from './pages/BodyMapPage';
+import { healthApi } from './api';
+import { INDICATORS } from './core/indicators';
+import { INDICATOR_IDS } from './core/types';
+import type { EvaluationResult, IndicatorId, Scenario, Status } from './core/types';
 import IndicatorPage from './pages/IndicatorPage';
-import thresholdsData from './content/thresholds.json';
-import { useState } from 'react';
 
-type ZoneStatus = 'normal' | 'attention' | 'critical';
-
-/*function getStatus(val: number, normalMin: number, normalMax: number, critMin: number, critMax: number): ZoneStatus {
-  if (val < critMin || val > critMax) return 'critical';
-  if (val < normalMin || val > normalMax) return 'attention';
-  return 'normal';
-}*/
-
-const STATUS_LABELS: Record<ZoneStatus, string> = {
-  normal: 'Normal state',
-  attention: 'Attention',
-  critical: 'Critical state',
+const STATUS_ICON: Record<Status, string> = {
+  normal: '✓',
+  attention: '⚠',
+  critical: '!',
 };
 
-function Dashboard() {
-  const [vitals] = useState<StoredVitals>(() => {
-    const saved = localStorage.getItem(VITALS_STORAGE_KEY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // fallback below
-      }
-    }
+function formatIndicatorValue(id: IndicatorId, evaluation: EvaluationResult) {
+  const latest = evaluation.indicators[id].latest;
+  if (latest.length === 0) return { value: '—', unit: 'no data' };
+  if (id === 'blood_pressure') {
+    const sys = latest.find((m) => m.type === 'bp_systolic')?.value;
+    const dia = latest.find((m) => m.type === 'bp_diastolic')?.value;
     return {
-      heart_rate: 72,
-      bp_systolic: 118,
-      bp_diastolic: 76,
-      body_temperature: 36.6,
-      blood_glucose: 92,
-      sleep_hours: 7.5,
-      sleep_quality: 4,
-      mood_score: 4,
-      notes: '',
-      updatedAt: 'Nominal',
+      value: sys !== undefined && dia !== undefined ? `${sys}/${dia}` : '—',
+      unit: 'mmHg',
     };
-  });
+  }
+  const m = latest[0];
+  return { value: String(m.value), unit: m.unit };
+}
 
-  const getThresholdStatus = (key: keyof typeof thresholdsData, value: number): ZoneStatus => {
-    const zones = thresholdsData[key]?.zones ?? [];
-    let matched: ZoneStatus = 'attention';
-    for (const zone of zones) {
-      const aboveMin = !('min' in zone) || zone.min === undefined || value >= zone.min;
-      const belowMax = !('max' in zone) || zone.max === undefined || value <= zone.max;
-      if (aboveMin && belowMax) {
-        matched = zone.status as ZoneStatus;
-      }
-    }
-    return matched;
-  };
+function Dashboard() {
+  const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
 
-  const hrStatus = getThresholdStatus('heart_rate', vitals.heart_rate);
-  const tempStatus = getThresholdStatus('body_temperature', vitals.body_temperature);
-  const sysStatus = getThresholdStatus('bp_systolic', vitals.bp_systolic);
-  const diaStatus = getThresholdStatus('bp_diastolic', vitals.bp_diastolic);
-  const bpStatus: ZoneStatus =
-    sysStatus === 'critical' || diaStatus === 'critical'
-      ? 'critical'
-      : sysStatus === 'attention' || diaStatus === 'attention'
-        ? 'attention'
-        : 'normal';
-  const glucoseStatus = getThresholdStatus('blood_glucose', vitals.blood_glucose);
-  const sleepStatus = getThresholdStatus('sleep_hours', vitals.sleep_hours);
-  const moodStatus = getThresholdStatus('mood_score', vitals.mood_score);
+  useEffect(() => {
+    let active = true;
+    healthApi.getEvaluation().then((res) => {
+      if (active) setEvaluation(res);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  const alerts: { label: string; status: ZoneStatus; detail: string }[] = [];
-  if (hrStatus !== 'normal') alerts.push({ label: 'Heart Rate', status: hrStatus, detail: `${vitals.heart_rate} bpm` });
-  if (bpStatus !== 'normal') alerts.push({ label: 'Blood Pressure', status: bpStatus, detail: `${vitals.bp_systolic}/${vitals.bp_diastolic} mmHg` });
-  if (tempStatus !== 'normal') alerts.push({ label: 'Body Temperature', status: tempStatus, detail: `${vitals.body_temperature} °C` });
-  if (glucoseStatus !== 'normal') alerts.push({ label: 'Blood Glucose', status: glucoseStatus, detail: `${vitals.blood_glucose} mg/dL` });
-  if (sleepStatus !== 'normal') alerts.push({ label: 'Sleep Duration', status: sleepStatus, detail: `${vitals.sleep_hours} hours` });
-  if (moodStatus !== 'normal') alerts.push({ label: 'Mood Score', status: moodStatus, detail: `${vitals.mood_score} / 5` });
+  if (!evaluation) {
+    return <div className="body-zone-status">Loading telemetry...</div>;
+  }
+
+  const alerts = INDICATOR_IDS.map((id) => evaluation.indicators[id]).filter(
+    (res) => res.latest.length > 0 && res.status !== 'normal',
+  );
 
   return (
     <div className="dashboard-layout">
-      {/* ЛІВА КОЛОНКА: 6 карток показників із кольоровими зонами */}
-      <div className="vitals-grid-6">
-        <Link to="/indicator/heart_rate" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Heart Rate</h2>
-            <span className={`status-pill status-${hrStatus}`}>{STATUS_LABELS[hrStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.heart_rate}</span>
-            <span className="vital-unit">bpm</span>
-          </div>
-          <div className="vital-range-hint">Normal: 60–100 bpm</div>
-        </Link>
-
-        <Link to="/indicator/bp_systolic" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Blood Pressure</h2>
-            <span className={`status-pill status-${bpStatus}`}>{STATUS_LABELS[bpStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.bp_systolic}/{vitals.bp_diastolic}</span>
-            <span className="vital-unit">mmHg</span>
-          </div>
-          <div className="vital-range-hint">Normal: 90–119 / 60–79 mmHg</div>
-        </Link>
-
-        <Link to="/indicator/body_temperature" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Body Temperature</h2>
-            <span className={`status-pill status-${tempStatus}`}>{STATUS_LABELS[tempStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.body_temperature}</span>
-            <span className="vital-unit">°C</span>
-          </div>
-          <div className="vital-range-hint">Normal: 36.1–37.2 °C</div>
-        </Link>
-
-        <Link to="/indicator/blood_glucose" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Blood Glucose</h2>
-            <span className={`status-pill status-${glucoseStatus}`}>{STATUS_LABELS[glucoseStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.blood_glucose}</span>
-            <span className="vital-unit">mg/dL</span>
-          </div>
-          <div className="vital-range-hint">Normal: 70–99 mg/dL</div>
-        </Link>
-
-        <Link to="/indicator/sleep_hours" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Sleep Duration</h2>
-            <span className={`status-pill status-${sleepStatus}`}>{STATUS_LABELS[sleepStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.sleep_hours}</span>
-            <span className="vital-unit">hours</span>
-          </div>
-          <div className="vital-range-hint">Normal: 7–10 hours (Quality {vitals.sleep_quality}/5)</div>
-        </Link>
-
-        <Link to="/indicator/mood_score" className="vital-card">
-          <div className="vital-card-top">
-            <h2 className="vital-card-title">Mood &amp; Stress</h2>
-            <span className={`status-pill status-${moodStatus}`}>{STATUS_LABELS[moodStatus]}</span>
-          </div>
-          <div className="vital-value-row">
-            <span className="vital-number">{vitals.mood_score}</span>
-            <span className="vital-unit">/ 5</span>
-          </div>
-          <div className="vital-range-hint">Normal: 3–5 score</div>
-        </Link>
-      </div>
-
-      {/* ПРАВА КОЛОНКА: Зона Alert-ів + Контейнер під 2D-модель тіла */}
-      <div className="dashboard-right-col">
-        <div className="nasa-white-card">
-          <span className="nasa-tag">SYSTEM ALERTS</span>
-          <h3>Telemetry Status</h3>
-          {alerts.length === 0 ? (
-            <div className="alert-item status-normal">
-              ✓ All 6 biomedical systems nominal (Last sync: {vitals.updatedAt})
-            </div>
-          ) : (
-            alerts.map((a, idx) => (
-              <div key={idx} className={`alert-item status-${a.status}`}>
-                ⚠ {a.label}: {a.detail} — {STATUS_LABELS[a.status]}
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="nasa-white-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className="nasa-tag">BIOMETRIC MAP</span>
-            <Link to="/body" className="unit-label" style={{ textDecoration: 'underline' }}>
-              Full Body View →
-            </Link>
-          </div>
-          <h3>Astronaut 2D Body Model</h3>
-          {/* Контейнер для інтеграції 2D-фігури тіла іншим учасником */}
-          <Link to="/body" id="body-map-widget-slot" className="body-placeholder-box">
-            <strong>[ 2D Interactive Body Model Slot ]</strong>
-            <span style={{ marginTop: '0.4rem' }}>
-              Click to inspect organ systems &amp; localized telemetry
+      <div className="dashboard-top">
+        <div className="dashboard-summary-card">
+          <div className="summary-row">
+            <span className="summary-label">Overall Crew Health</span>
+            <span className={`status-pill status-${evaluation.overall}`}>
+              {STATUS_ICON[evaluation.overall]} {evaluation.overall}
             </span>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+          </div>
 
-function BodyMapPage() {
-  return (
-    <div className="nasa-white-card">
-      <span className="nasa-tag">BODY SYSTEMS</span>
-      <h2>Interactive Body Map</h2>
-      <p>Full-scale 2D body visualization and system diagnostics module.</p>
+          <div className="alerts-block">
+            <div className="alerts-title">Active Alerts ({alerts.length})</div>
+            {alerts.length === 0 ? (
+              <div className="alert-empty">✓ All telemetry indicators are within normal range.</div>
+            ) : (
+              alerts.map((a) => (
+                <div key={a.indicator} className={`alert-item status-text-${a.status}`}>
+                  {STATUS_ICON[a.status]} {a.reason}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <Link to="/body" className="mini-body-card" title="Open Interactive Body Map">
+          <svg viewBox="390 25 244 525" className="mini-body-svg">
+            <image
+              href="/body-silhouette-male.svg"
+              x="390"
+              y="25"
+              width="244"
+              height="525"
+            />
+            {evaluation.regions.brain_mind !== 'normal' &&
+              evaluation.regions.brain_mind !== 'no-data' && (
+                <circle
+                  cx="512"
+                  cy="76"
+                  r="24"
+                  fill="rgba(245, 158, 11, 0.38)"
+                  stroke="#f59e0b"
+                  strokeWidth="2"
+                />
+              )}
+          </svg>
+          <span className="mini-body-label">Body Map →</span>
+        </Link>
+      </div>
+
+      <main className="dashboard-grid">
+        {INDICATOR_IDS.map((id) => {
+          const def = INDICATORS[id];
+          const res = evaluation.indicators[id];
+          const { value, unit } = formatIndicatorValue(id, evaluation);
+          const hasData = res.latest.length > 0;
+
+          return (
+            <div key={id} className={`metric-card metric-card-${hasData ? res.status : 'nodata'}`}>
+              <div className="metric-card-header">
+                <span className="metric-card-title">{def.label}</span>
+                <span className={`status-pill status-${res.status}`}>
+                  {STATUS_ICON[res.status]} {hasData ? res.status : 'no data'}
+                </span>
+              </div>
+              <div className="metric-card-value">
+                <span className="metric-number">{value}</span>
+                <span className="metric-unit">{unit}</span>
+              </div>
+              <div className="metric-card-reason">{res.reason}</div>
+            </div>
+          );
+        })}
+      </main>
     </div>
   );
 }
 
 function MissionPage() {
+  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [overall, setOverall] = useState<Status | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    Promise.all([healthApi.getScenarios(), healthApi.getEvaluation()]).then(([list, evalRes]) => {
+      if (!active) return;
+      setScenarios(list);
+      setOverall(evalRes.overall);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const applyScenario = async (scenarioId: string) => {
+    const res = await healthApi.loadScenario(scenarioId);
+    setActiveId(scenarioId);
+    setOverall(res.overall);
+  };
+
+  const resetStorage = async () => {
+    const res = await healthApi.resetData();
+    setActiveId(null);
+    setOverall(res.overall);
+  };
+
   return (
-    <div className="nasa-white-card">
-      <span className="nasa-tag">SIMULATION</span>
-      <h2>Mission Scenario Player</h2>
-      <p>Orbital mission timeline and telemetry scenario controls (/mission).</p>
+    <div className="dashboard-layout">
+      <div className="summary-row">
+        <span className="summary-label">
+          Mission Scenario Player {overall ? `(${overall})` : ''}
+        </span>
+        <button type="button" className="close-btn" onClick={resetStorage}>
+          Reset to Default
+        </button>
+      </div>
+      <div className="dashboard-grid">
+        {scenarios.map((s) => {
+          const isCurrent = activeId === s.id;
+          return (
+            <div key={s.id} className="metric-card">
+              <div className="metric-card-header">
+                <span className="metric-card-title">{s.id}</span>
+                <span className="status-pill status-normal">{s.days.length} days</span>
+              </div>
+              <div className="organ-title">{s.title}</div>
+              <div className="metric-card-reason">{s.story}</div>
+              <button
+                type="button"
+                className={`gender-btn ${isCurrent ? 'active' : ''}`}
+                onClick={() => applyScenario(s.id)}
+              >
+                {isCurrent ? 'Active ✓' : 'Load Scenario'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
