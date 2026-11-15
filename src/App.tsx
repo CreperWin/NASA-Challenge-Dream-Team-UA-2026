@@ -2,15 +2,16 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MeasurePage, { VITALS_STORAGE_KEY, type StoredVitals } from './pages/MeasurePage';
 import IndicatorPage from './pages/IndicatorPage';
+import thresholdsData from './content/thresholds.json';
 import { useState } from 'react';
 
 type ZoneStatus = 'normal' | 'attention' | 'critical';
 
-function getStatus(val: number, normalMin: number, normalMax: number, critMin: number, critMax: number): ZoneStatus {
+/*function getStatus(val: number, normalMin: number, normalMax: number, critMin: number, critMax: number): ZoneStatus {
   if (val < critMin || val > critMax) return 'critical';
   if (val < normalMin || val > normalMax) return 'attention';
   return 'normal';
-}
+}*/
 
 const STATUS_LABELS: Record<ZoneStatus, string> = {
   normal: 'Normal state',
@@ -42,19 +43,32 @@ function Dashboard() {
     };
   });
 
-  const hrStatus = getStatus(vitals.heart_rate, 50, 100, 40, 120);
-  const tempStatus = getStatus(vitals.body_temperature, 36, 37.5, 35, 38.5);
-  const sysStatus = getStatus(vitals.bp_systolic, 90, 130, 80, 160);
-  const diaStatus = getStatus(vitals.bp_diastolic, 60, 85, 50, 100);
+  const getThresholdStatus = (key: keyof typeof thresholdsData, value: number): ZoneStatus => {
+    const zones = thresholdsData[key]?.zones ?? [];
+    let matched: ZoneStatus = 'attention';
+    for (const zone of zones) {
+      const aboveMin = !('min' in zone) || zone.min === undefined || value >= zone.min;
+      const belowMax = !('max' in zone) || zone.max === undefined || value <= zone.max;
+      if (aboveMin && belowMax) {
+        matched = zone.status as ZoneStatus;
+      }
+    }
+    return matched;
+  };
+
+  const hrStatus = getThresholdStatus('heart_rate', vitals.heart_rate);
+  const tempStatus = getThresholdStatus('body_temperature', vitals.body_temperature);
+  const sysStatus = getThresholdStatus('bp_systolic', vitals.bp_systolic);
+  const diaStatus = getThresholdStatus('bp_diastolic', vitals.bp_diastolic);
   const bpStatus: ZoneStatus =
     sysStatus === 'critical' || diaStatus === 'critical'
       ? 'critical'
       : sysStatus === 'attention' || diaStatus === 'attention'
-      ? 'attention'
-      : 'normal';
-  const glucoseStatus = getStatus(vitals.blood_glucose, 70, 140, 54, 200);
-  const sleepStatus = getStatus(vitals.sleep_hours, 6, 10, 4, 16);
-  const moodStatus: ZoneStatus = vitals.mood_score < 2 ? 'critical' : vitals.mood_score < 3 ? 'attention' : 'normal';
+        ? 'attention'
+        : 'normal';
+  const glucoseStatus = getThresholdStatus('blood_glucose', vitals.blood_glucose);
+  const sleepStatus = getThresholdStatus('sleep_hours', vitals.sleep_hours);
+  const moodStatus = getThresholdStatus('mood_score', vitals.mood_score);
 
   const alerts: { label: string; status: ZoneStatus; detail: string }[] = [];
   if (hrStatus !== 'normal') alerts.push({ label: 'Heart Rate', status: hrStatus, detail: `${vitals.heart_rate} bpm` });
@@ -77,7 +91,7 @@ function Dashboard() {
             <span className="vital-number">{vitals.heart_rate}</span>
             <span className="vital-unit">bpm</span>
           </div>
-          <div className="vital-range-hint">Normal: 50–100 bpm</div>
+          <div className="vital-range-hint">Normal: 60–100 bpm</div>
         </Link>
 
         <Link to="/indicator/bp_systolic" className="vital-card">
@@ -89,7 +103,7 @@ function Dashboard() {
             <span className="vital-number">{vitals.bp_systolic}/{vitals.bp_diastolic}</span>
             <span className="vital-unit">mmHg</span>
           </div>
-          <div className="vital-range-hint">Normal: 90–130 / 60–85 mmHg</div>
+          <div className="vital-range-hint">Normal: 90–119 / 60–79 mmHg</div>
         </Link>
 
         <Link to="/indicator/body_temperature" className="vital-card">
@@ -101,7 +115,7 @@ function Dashboard() {
             <span className="vital-number">{vitals.body_temperature}</span>
             <span className="vital-unit">°C</span>
           </div>
-          <div className="vital-range-hint">Normal: 36.0–37.5 °C</div>
+          <div className="vital-range-hint">Normal: 36.1–37.2 °C</div>
         </Link>
 
         <Link to="/indicator/blood_glucose" className="vital-card">
@@ -113,7 +127,7 @@ function Dashboard() {
             <span className="vital-number">{vitals.blood_glucose}</span>
             <span className="vital-unit">mg/dL</span>
           </div>
-          <div className="vital-range-hint">Normal: 70–140 mg/dL</div>
+          <div className="vital-range-hint">Normal: 70–99 mg/dL</div>
         </Link>
 
         <Link to="/indicator/sleep_hours" className="vital-card">
@@ -125,7 +139,7 @@ function Dashboard() {
             <span className="vital-number">{vitals.sleep_hours}</span>
             <span className="vital-unit">hours</span>
           </div>
-          <div className="vital-range-hint">Normal: 6–10 hours (Quality {vitals.sleep_quality}/5)</div>
+          <div className="vital-range-hint">Normal: 7–10 hours (Quality {vitals.sleep_quality}/5)</div>
         </Link>
 
         <Link to="/indicator/mood_score" className="vital-card">
