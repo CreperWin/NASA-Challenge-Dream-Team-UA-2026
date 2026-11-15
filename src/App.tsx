@@ -4,6 +4,7 @@ import BodyMapPage from './pages/BodyMapPage';
 import MeasurePage, { VITALS_STORAGE_KEY, type StoredVitals } from './pages/MeasurePage';
 import IndicatorPage from './pages/IndicatorPage';
 import thresholdsData from './content/thresholds.json';
+import MissionPage from './pages/MissionPage';
 import { useState } from 'react';
 
 type ZoneStatus = 'normal' | 'attention' | 'critical';
@@ -237,16 +238,6 @@ function Dashboard() {
           </Link>
         </div>
       </div>
-    </div>
-  );
-}
-
-function MissionPage() {
-  return (
-    <div className="nasa-white-card">
-      <span className="nasa-tag">SIMULATION</span>
-      <h2>Mission Scenario Player</h2>
-      <p>Orbital mission timeline and telemetry scenario controls (/mission).</p>
     </div>
   );
 }

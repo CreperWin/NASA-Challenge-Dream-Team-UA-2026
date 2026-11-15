@@ -217,11 +217,34 @@ header.border-b nav a {
   padding: 0.25rem 0 0.75rem 0.75rem;
   cursor: pointer;
 }
+/*button-----------------------------------*/
+.mobile-nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  padding: 0.45rem 0.75rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
 
+.mobile-nav-trigger:active {
+  background: rgba(255, 255, 255, 0.24);
+}
 /* Десктопна версія (>= 768px) — залишається точно як на комп'ютерному скріншоті */
 @media (min-width: 768px) {
   .mobile-nav-backdrop,
-  .mobile-nav-close {
+  .mobile-nav-close, .mobile-nav-trigger {
     display: none !important;
   }
 
@@ -1047,4 +1070,227 @@ h2, h3 { font-family: 'Exo 2', sans-serif; }
   .heart-pulse {
     animation: none;
   }
+}
+
+/* Сторінка Mission Sim (/mission) */
+.mission-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mission-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.mission-title {
+  margin: 0.25rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mission-day-badge {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+}
+
+.mission-steps {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-left: 0.4rem;
+}
+
+.mission-section-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.mission-scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.mission-scenario-card {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.mission-scenario-card:hover {
+  border-color: #94a3b8;
+}
+
+.mission-scenario-card.active {
+  border-color: var(--nasa-blue);
+  background: #eff6ff;
+}
+
+.mission-scenario-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.mission-scenario-meta {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.35rem;
+}
+
+.mission-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.mission-playback-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mission-btn {
+  padding: 0.55rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.mission-btn:hover {
+  opacity: 0.9;
+}
+
+.mission-btn-start {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.mission-btn-pause {
+  background-color: #d97706;
+  color: #ffffff;
+}
+
+.mission-btn-reset {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.mission-speed-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mission-speed-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-right: 0.25rem;
+}
+
+.mission-speed-btn {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.375rem;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mission-speed-btn.active {
+  background: var(--nasa-blue);
+  border-color: var(--nasa-blue);
+  color: #ffffff;
+}
+
+.mission-progress-wrap {
+  margin-top: 1rem;
+}
+
+.mission-progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: #475569;
+  margin-bottom: 0.35rem;
+}
+
+.mission-progress-track {
+  width: 100%;
+  height: 0.5rem;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mission-progress-fill {
+  height: 100%;
+  background: var(--nasa-blue);
+  transition: width 0.25s ease;
+}
+
+.mission-monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem;
+}
+
+.mission-monitor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.mission-monitor-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.mission-monitor-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 0.15rem;
 }
